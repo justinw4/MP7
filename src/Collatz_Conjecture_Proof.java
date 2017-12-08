@@ -9,16 +9,32 @@ public class Collatz_Conjecture_Proof {
 	 * intro!
 	 * @param args if they enter as a flag!
 	 */
+	static String input_num;
 	public static void main(String[] args) {
+		Scanner input = null;
 		System.out.println("Suppose F is a function defined by\nF(n) = n/2 if n%2 == 0, else (3n-1)/2.");
-		System.out.println("If you think this has an ending number always, try your luck and enter a number");
 		if(args.length == 0) {
-			Scanner input = new Scanner(System.in);
-			NUMBER_ENTERED = input.nextLong();
-			input.close();
+			System.out.println("If you think this has an ending number always, try your luck and enter a number");
+			input = new Scanner(System.in);
+			input_num = input.next();
+			
 		} else {
-			NUMBER_ENTERED = new Long(args[0]);
+			input_num = args[0];
 		}
+		while(true) {
+			try {
+				NUMBER_ENTERED = new Long(input_num);
+				if(NUMBER_ENTERED > 0) {
+					break;
+				}
+				throw new Exception();
+			}
+			catch (Exception e) {
+				System.out.println("You didn't enter a valid number. Try again.");
+				input_num = input.next();
+			}
+		}
+		input.close();
 		System.out.println("Let's start");
 		collatz_ing();
 		
