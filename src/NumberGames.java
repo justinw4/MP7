@@ -58,6 +58,7 @@ public class NumberGames {
 	
 	public static void dealOrNoDeal() {
 		
+		boolean gameOver = false; 
 		Scanner howieMandel = new Scanner(System.in);
 		int[] briefcases = assignCaseValues();
 		
@@ -65,44 +66,96 @@ public class NumberGames {
 		System.out.println("To start off, choose the case that you think has the 1 million dollars in it and you will hold on to this for the rest of the game.");
 		System.out.println("Choose your case! ");
 		
-		int yourCase = howieMandel.nextInt(); 
+		int yourCase = howieMandel.nextInt();
 		
+		int loopCount = 0; 
 		
-		
-		System.out.println("Now it's time to choose 6 cases to eliminate from the board");
-		for (int r = 24; r >= 0; r++) {
-			System.out.print((r + 1) + "	");
-			if (r % 5 == 0) {
-				System.out.println();
-			}
-		}
-		int count = 6; 
-		while (count >= 0) {
-			System.out.println("Select a case!");
-			int yourPick = howieMandel.nextInt(); 
-			while (caseAlreadyChosen(yourPick, briefcases)) {
-				System.out.println("That case was already selected. Pick a new case: ");
-				yourPick = howieMandel.nextInt();
-			}
-			System.out.println("The value in the case you selected is: " + briefcases[yourPick]);
-			briefcases[yourPick] = 0; 
-			count--;
+		if (!gameOver) {
+			while (loopCount < 3)
+			System.out.println("Now it's time to choose 6 cases to eliminate from the board");
 			
+			int count = 6; 
+			while (count >= 0) {
+			
+				System.out.println("Select a case!");
+				showAvailableCases(briefcases);
+			
+				int yourPick = howieMandel.nextInt(); 
+				while (caseAlreadyChosen(yourPick, briefcases) || yourPick == yourCase) {
+					System.out.println("That case was already selected. Pick a new case: ");
+					yourPick = howieMandel.nextInt();
+				}
+				System.out.println("The value in the case you selected is: " + briefcases[yourPick]);
+				briefcases[yourPick] = 0; 
+				count--;
+			}
+		
+			Banker(briefcases, gameOver);
+		}
+		
+	}
+	
+	public static void Banker(int[] values, boolean isGameOver) {
+		
+		Scanner banker = new Scanner(System.in);
+		System.out.println("The banker is calling. He has an offer for you");
+		long sum = 0; 
+		int count = 0; 
+		for (int i = 0; i < values.length; i++) {
+			sum += values[i];
+			if (values[i] != 0) {
+				count++;
+			}
+		}
+		int offer = (int) (sum / count);
+		System.out.println("I am the banker. I am willing to offer $" + offer + "."); 
+		System.out.println("You can either take my offer or continue playing for a chance at the highest remaining value in the briefcases.");
+		System.out.println("It's your choice. Deal or No Deal...");
+		
+		String choice = banker.next().toUpperCase();
+		if (choice.equals("DEAL")) {
+			System.out.println("Congratulations! You're going home with $" + offer + "!!!");
+			isGameOver = true;
+		} else {
+			if (choice.equals("NO DEAL")) {
+				System.out.println("Bold move. Let's keep playing!");
+			}
 		}
 	}
 	
-	public static int Banker() {
-		return 0; 
-	}
 	
-	
-public static boolean caseAlreadyChosen(int c, int[] cases) {
+	public static boolean caseAlreadyChosen(int c, int[] cases) {
 		
 		if (cases[c] == 0) {
 			return true;
 		}
 		return false;
 	}
+	
+	
+	public static void showAvailableCases(int[] values) {
+		
+		for (int i = 24; i >= 0; i--) {
+			if (values[i] == 0) {
+				System.out.print("X");
+			}
+			
+			System.out.print((i + 1) + "    ");
+			
+			if (i % 5 == 0) {
+				System.out.println();
+			}
+		}
+	}
+	
+	public static void showValuesLeft(int[] values) {
+		
+		for (int i = 0; i < values.length; i++) {
+			if (values[i])
+		}
+		
+	}
+	
 	
 	public static int[] assignCaseValues() {
 		
