@@ -95,6 +95,7 @@ public class NumberGames {
 		return 0; 
 	}
 	
+	
 public static boolean caseAlreadyChosen(int c, int[] cases) {
 		
 		if (cases[c] == 0) {
