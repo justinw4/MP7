@@ -15,11 +15,9 @@ public class NumberGames {
 		}
 		
 		if (inputNumber == 1) {
-			System.out.println("Now pick a positive integer to undergo Collatz Conjecture! ");
-			int collatzNumber = reader.nextInt(); 
-			System.out.println("Start!");
-			collatzConjecture(collatzNumber);
-			
+			Collatz_Conjecture_Proof a = new Collatz_Conjecture_Proof();
+			String[] b = {};
+			a.main(b);
 		}
 		
 		if (inputNumber == 2) {
@@ -33,10 +31,6 @@ public class NumberGames {
 			System.out.println("Can you guess the number I am thinking of between 1 and " + bound + "? ");
 			guessTheNumber(bound);
 		}
-	}
-	
-	public static void collatzConjecture(final int n) {
-		
 	}
 	
 	public static void guessTheNumber(final int bound) {
