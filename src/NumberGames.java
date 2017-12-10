@@ -6,11 +6,11 @@ public class NumberGames {
 		
 		int inputNumber = 1;
 		Scanner reader = new Scanner(System.in); 
-		System.out.println("Pick a number game! Type '1' for Collatz Conjecture or type '2' for Guess The Number! ");
+		System.out.println("Pick a number game! Type '1' for Collatz Conjecture or type '2' for Guess The Number or type '3' for DEAL OR NO DEAL! ");
 		inputNumber = reader.nextInt();
 		
-		while (inputNumber != 1 && inputNumber != 2) {
-			System.out.println("Please pick either '1' or '2'.");
+		while (inputNumber != 1 && inputNumber != 2 && inputNumber != 3) {
+			System.out.println("Please pick either '1','2', or '3'.");
 			inputNumber = reader.nextInt();
 		}
 		
@@ -30,6 +30,10 @@ public class NumberGames {
 			}
 			System.out.println("Can you guess the number I am thinking of between 1 and " + bound + "? ");
 			guessTheNumber(bound);
+		}
+		
+		if (inputNumber == 3) {
+			dealOrNoDeal();
 		}
 	}
 	
@@ -70,35 +74,104 @@ public class NumberGames {
 		
 		int loopCount = 0; 
 		
-		if (!gameOver) {
-			while (loopCount < 3)
-			System.out.println("Now it's time to choose 6 cases to eliminate from the board");
+		while (!gameOver) {
 			
-			int count = 6; 
-			while (count >= 0) {
+			while (loopCount < 3) {
+				System.out.println("Now it's time to choose 6 cases to eliminate from the board. Here are the values in the cases");
+				showValuesLeft(briefcases);
 			
+				int count = 6; 
+				while (count > 0) {
+			
+					System.out.println("Select a case!");
+					showAvailableCases(briefcases, yourCase);
+			
+					int yourPick = howieMandel.nextInt(); 
+					while (caseAlreadyChosen(yourPick, briefcases) || yourPick == yourCase) {
+						System.out.println("That case was already selected. Pick a new case: ");
+						yourPick = howieMandel.nextInt();
+					}
+					System.out.println("The value in the case you selected is: " + briefcases[yourPick - 1]);
+					briefcases[yourPick - 1] = 0; 
+					count--;
+					showValuesLeft(briefcases);
+				}
+		
+				gameOver = Banker(briefcases, gameOver);
+				loopCount++; 
+				if (gameOver) {
+					break;
+				}
+			}
+			
+			System.out.println("Now you only need to choose 5 cases. Here are the values that are left.");
+			int count = 5; 
+			while (count > 0) {
+		
 				System.out.println("Select a case!");
-				showAvailableCases(briefcases);
-			
+				showAvailableCases(briefcases, yourCase);
+		
 				int yourPick = howieMandel.nextInt(); 
 				while (caseAlreadyChosen(yourPick, briefcases) || yourPick == yourCase) {
 					System.out.println("That case was already selected. Pick a new case: ");
 					yourPick = howieMandel.nextInt();
 				}
-				System.out.println("The value in the case you selected is: " + briefcases[yourPick]);
-				briefcases[yourPick] = 0; 
+				System.out.println("The value in the case you selected is: " + briefcases[yourPick - 1]);
+				briefcases[yourPick - 1] = 0; 
 				count--;
+				showValuesLeft(briefcases);
 			}
-		
-			Banker(briefcases, gameOver);
+			gameOver = Banker(briefcases, gameOver);
+			if (gameOver) {
+				break;
+			}
+			
+			System.out.println("We are now down to 2 cases: Your case, and the final case left on the board.");
+			System.out.println("You can either stick with the case you chose from the beginning, or swap with the other remaining case.");
+			System.out.println("The one you pick will determine the amount of money you will be going home with.");
+			System.out.println("Type 'Y' to swap. Type 'N' to stay with your original case.");
+			String choice = howieMandel.next().toUpperCase();
+			while (!(choice.equals("Y")) && !(choice.equals("N"))) {
+				System.out.println("Please type 'Y' or 'N'.");
+				choice = howieMandel.next().toUpperCase();
+			}
+			if (choice.equals("N")) {
+				System.out.print("You are going home with... $" + briefcases[yourCase- 1]);
+				if (briefcases[yourCase - 1] <= 1000) {
+					System.out.println("....Sorry");
+				} else {
+					System.out.println("!!!!! Congratulations!!!");
+				}
+				gameOver = true;
+				
+				System.out.print("The value that you could have swapped with was... $");
+				int lastCase = findLastCase(briefcases, yourCase);
+				System.out.print(briefcases[lastCase - 1] + ".");
+				
+			} else {
+				int lastCase = findLastCase(briefcases, yourCase);
+				System.out.print("You are going home with... $" + briefcases[lastCase - 1]);
+				if (briefcases[lastCase - 1] <= 1000) {
+					System.out.println("....Sorry");
+				} else {
+					System.out.println("!!!!! Congratulations!!!");
+				}
+				gameOver = true;
+				
+				System.out.print("The value that you could have swapped with was... $");
+				System.out.print(briefcases[yourCase - 1] + ".");
+			}
+			
+			
 		}
 		
 	}
 	
-	public static void Banker(int[] values, boolean isGameOver) {
+	public static boolean Banker(int[] values, boolean isGameOver) {
 		
 		Scanner banker = new Scanner(System.in);
-		System.out.println("The banker is calling. He has an offer for you");
+		System.out.println("The banker is calling. He has an offer for you.");
+		System.out.println();
 		long sum = 0; 
 		int count = 0; 
 		for (int i = 0; i < values.length; i++) {
@@ -110,37 +183,54 @@ public class NumberGames {
 		int offer = (int) (sum / count);
 		System.out.println("I am the banker. I am willing to offer $" + offer + "."); 
 		System.out.println("You can either take my offer or continue playing for a chance at the highest remaining value in the briefcases.");
-		System.out.println("It's your choice. Deal or No Deal...");
+		
+		showValuesLeft(values);
+		System.out.println();
+		System.out.println("---- OR ----");
+		System.out.println();
+		System.out.println("$" + offer);
+		System.out.println();
+		System.out.println("It's your choice. Deal or No Deal... ('Y' for Deal, 'N' for No Deal)");
 		
 		String choice = banker.next().toUpperCase();
-		if (choice.equals("DEAL")) {
+		
+		while (!(choice.equals("Y")) && !(choice.equals("N"))) {
+			System.out.println("Please type 'Y' or 'N'.");
+			choice = banker.next().toUpperCase();
+		}
+		if (choice.equals("Y")) {
 			System.out.println("Congratulations! You're going home with $" + offer + "!!!");
 			isGameOver = true;
 		} else {
-			if (choice.equals("NO DEAL")) {
+			if (choice.equals("N")) {
 				System.out.println("Bold move. Let's keep playing!");
 			}
 		}
+		return isGameOver;
 	}
 	
 	
 	public static boolean caseAlreadyChosen(int c, int[] cases) {
 		
-		if (cases[c] == 0) {
+		if (cases[c - 1] == 0) {
 			return true;
 		}
 		return false;
 	}
 	
 	
-	public static void showAvailableCases(int[] values) {
+	public static void showAvailableCases(int[] values, int yourCase) {
 		
 		for (int i = 24; i >= 0; i--) {
 			if (values[i] == 0) {
-				System.out.print("X");
+				System.out.printf("%8s", "--");
+			} else {
+				if ((i + 1) == yourCase) {
+					System.out.printf("%8s", "**");
+				} else {
+					System.out.printf("%8s", (i + 1));
+				}
 			}
-			
-			System.out.print((i + 1) + "    ");
 			
 			if (i % 5 == 0) {
 				System.out.println();
@@ -148,16 +238,34 @@ public class NumberGames {
 		}
 	}
 	
-	public static void showValuesLeft(int[] values) {
+	
+	
+	public static void showValuesLeft(int[] cases) {
+		
+		
+		int[] values = createValueArray();
 		
 		for (int i = 0; i < values.length; i++) {
-			if (values[i])
+			boolean valueExists = false; 
+			if (i % 5 == 0) {
+				System.out.println(); 
+			}
+			for (int j = 0; j < values.length; j++) {
+				
+				if (values[i] == cases[j]) {
+					System.out.printf("%15s", values[i]);
+					valueExists = true;
+				}
+			}
+			if (!valueExists) {
+				System.out.printf("%15s", "----");
+			}
 		}
-		
+		System.out.println();
 	}
 	
 	
-	public static int[] assignCaseValues() {
+	public static int[] createValueArray() {
 		
 		int[] values = new int[25];
 		values[0] = 1;
@@ -185,6 +293,14 @@ public class NumberGames {
 		values[22] = 500000;
 		values[23] = 750000;
 		values[24] = 1000000;
+		
+		return values;
+	}
+	
+	
+	public static int[] assignCaseValues() {
+		
+		int[] values = createValueArray();
 
 		int[] cases = new int[25];
 		for (int row = 0; row < cases.length; row++) {
@@ -197,6 +313,21 @@ public class NumberGames {
 			values[r] = 0; 
 			}
 		return cases; 
+	}
+	
+	
+	
+	public static int findLastCase(int[] values, int yourCase) {
+		
+		int lastCase = 0;
+		for (int i = 0; i < values.length; i++) {
+			if (values[i] != 0 && (i + 1) != yourCase) {
+				lastCase = i + 1; 
+				break;
+			}
+		}
+		
+		return lastCase; 
 	}
 	
 }
