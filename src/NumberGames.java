@@ -59,25 +59,48 @@ public class NumberGames {
 	public static void dealOrNoDeal() {
 		
 		Scanner howieMandel = new Scanner(System.in);
+		int[] briefcases = assignCaseValues();
+		
 		System.out.println("Welcome to Deal or No Deal. The goal of the game is to eliminate cases to try and win a million dollars. ");
 		System.out.println("To start off, choose the case that you think has the 1 million dollars in it and you will hold on to this for the rest of the game.");
 		System.out.println("Choose your case! ");
+		
 		int yourCase = howieMandel.nextInt(); 
 		
+		
+		
 		System.out.println("Now it's time to choose 6 cases to eliminate from the board");
-		for (int r = 0; r < 25; r++) {
+		for (int r = 24; r >= 0; r++) {
+			System.out.print((r + 1) + "	");
 			if (r % 5 == 0) {
 				System.out.println();
 			}
-			System.out.print(r + "	");
 		}
-		
-		
-		
+		int count = 6; 
+		while (count >= 0) {
+			System.out.println("Select a case!");
+			int yourPick = howieMandel.nextInt(); 
+			while (caseAlreadyChosen(yourPick, briefcases)) {
+				System.out.println("That case was already selected. Pick a new case: ");
+				yourPick = howieMandel.nextInt();
+			}
+			System.out.println("The value in the case you selected is: " + briefcases[yourPick]);
+			briefcases[yourPick] = 0; 
+			count--;
+			
+		}
 	}
 	
 	public static int Banker() {
 		return 0; 
+	}
+	
+public static boolean caseAlreadyChosen(int c, int[] cases) {
+		
+		if (cases[c] == 0) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static int[] assignCaseValues() {
