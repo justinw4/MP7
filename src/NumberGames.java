@@ -6,7 +6,9 @@ public class NumberGames {
 		
 		int inputNumber = 1;
 		Scanner reader = new Scanner(System.in); 
-		System.out.println("Pick a number game! Type '1' for Collatz Conjecture or type '2' for Guess The Number or type '3' for Magic Maths or type '4' for DEAL OR NO DEAL! ");
+		System.out.println("Pick a number game! Type '1' for Collatz Conjecture or type '2' for Guess The Number" 
+				+ "or type '3' for Magic Maths or type '4' for DEAL OR NO DEAL! ");
+		
 		inputNumber = reader.nextInt();
 		
 		while (inputNumber != 1 && inputNumber != 2 && inputNumber != 3 && inputNumber != 4) {
@@ -41,6 +43,16 @@ public class NumberGames {
 		}
 	}
 	
+	
+	
+	
+	
+	// Guess the Number
+	
+	
+	
+	
+	
 	public static void guessTheNumber(final int bound) {
 		
 		int correctNumber = (int) (Math.random() * (bound - 1) + 1); 
@@ -63,6 +75,16 @@ public class NumberGames {
 		}
 		System.out.println("You win!!!");
 	}
+	
+	
+	
+	
+	
+	
+	// Magic Maths
+	
+	
+	
 	
 	
 	public static void magicMaths() {
@@ -94,6 +116,16 @@ public class NumberGames {
 		System.out.println("Your number is " + number +".");
 	}
 
+	
+	
+	
+	
+	
+	// Deal or No Deal
+	
+	
+	
+	
 	
 	
 	public static void dealOrNoDeal() {
