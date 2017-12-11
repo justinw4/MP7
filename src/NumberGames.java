@@ -7,7 +7,7 @@ public class NumberGames {
 		int inputNumber = 1;
 		Scanner reader = new Scanner(System.in); 
 		System.out.println("Pick a number game! Type '1' for Collatz Conjecture or type '2' for Guess The Number" 
-				+ "or type '3' for Magic Maths or type '4' for DEAL OR NO DEAL! ");
+				+ " or type '3' for Magic Maths or type '4' for DEAL OR NO DEAL! ");
 		
 		inputNumber = reader.nextInt();
 		
@@ -88,32 +88,9 @@ public class NumberGames {
 	
 	
 	public static void magicMaths() {
-		int MAX_BOUND = 32;
-		int number = 0;
-		System.out.println("Pick a number between 1-"+	(MAX_BOUND-1) + ". Don't reveal it.");
-		Scanner input = new Scanner(System.in);
-		for(int i = 0; i < Math.log10(MAX_BOUND)/Math.log10(2); i++) {
-			int count = 0;
-			System.out.println("Is your number in this following list:");
-			for (int j = 1; j < MAX_BOUND; j++) {
-				if(((j >> i ) & 1) == 1) {
-					System.out.printf("%5s", (j + " "));
-					
-					if(++count % 4 == 0) {
-						System.out.println();
-					}
-				}
-			}
-			String confirmation = null;
-			if((confirmation = input.next()).toLowerCase().charAt(0) == 'y') {
-				number += Math.pow(2, i);
-			}
-			else if(confirmation.toLowerCase().charAt(0) != 'n') {
-				System.out.println("You didn't enter a valid number!\nThat's a no for that list.");				
-			}
-			System.out.println("\n");
-		}
-		System.out.println("Your number is " + number +".");
+		MagicMaths a = new MagicMaths();
+		String[] b = {};
+		a.main(b);
 	}
 
 	

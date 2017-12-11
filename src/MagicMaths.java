@@ -22,7 +22,8 @@ public class MagicMaths {
 				number += Math.pow(2, i);
 			}
 			else if(confirmation.toLowerCase().charAt(0) != 'n') {
-				System.out.println("You didn't enter a valid number!\nThat's a no for that list.");				
+				System.out.println("You didn't enter a valid number!\n");
+				i--;
 			}
 			System.out.println("\n");
 		}
