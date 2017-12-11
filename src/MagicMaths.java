@@ -10,10 +10,8 @@ public class MagicMaths {
 			System.out.println("Is your number in this following list:");
 			for (int j = 1; j < MAX_BOUND; j++) {
 				if(((j >> i ) & 1) == 1) {
-					System.out.print(j + " ");
-					if(Math.log10(j) < (int) Math.log10(MAX_BOUND)) {
-						System.out.print(" ");
-					}
+					System.out.printf("%5s", (j + " "));
+					
 					if(++count % 4 == 0) {
 						System.out.println();
 					}

@@ -103,6 +103,9 @@ public class NumberGames {
 					break;
 				}
 			}
+			if (gameOver) {
+				break;
+			}
 			
 			System.out.println("Now you only need to choose 5 cases. Here are the values that are left.");
 			int count = 5; 
